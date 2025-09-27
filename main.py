@@ -9,18 +9,18 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from datetime import datetime
 
-# Storage (your existing helpers)
+
 from storage import CivicDoc, save_doc, get_feed
 
-# Agents (robust extract/summarize)
+
 from civic_agents.extract import extract_text_from_bytes, sniff_content_type
 from civic_agents.summarizer import summarize_text
 
-# If you still need direct URL fetch helpers below
+
 PDF_HINT = re.compile(r"\.pdf($|\?)", re.I)
 
-# --- App setup ---
-load_dotenv()  # ensure .env is loaded for downstream modules
+
+load_dotenv()  
 app = FastAPI()
 
 @app.get("/")
@@ -34,7 +34,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ---------- Utilities ----------
+
 async def fetch_url_bytes(url: str) -> tuple[bytes, str]:
     async with httpx.AsyncClient(follow_redirects=True, timeout=25) as client:
         r = await client.get(url)
@@ -53,18 +53,14 @@ def extract_text_from_html(data: bytes) -> str:
     return " ".join(soup.get_text(" ").split()).strip()
 
 def civicdoc_from_item(item: dict, source_label: Optional[str]) -> CivicDoc:
-    """
-    Map the summarizer output (title, highlights, why_matters, etc.) into your CivicDoc schema.
-    Adjust mappings any time you refine the summarizer format.
-    """
     title = item.get("title") or "Civic Update"
     tl_dr = item.get("why_matters") or ""
     highlights = item.get("highlights") or []
-    what_changes = highlights[:3]                      # heuristic
-    what_residents_should_know = highlights            # reuse for now
-    actions_for_residents = []                         # none yet (can prompt for these later)
-    tags = []                                          # tagging comes later
-    uncertainty = 0.3                                  # default; can be model-estimated later
+    what_changes = highlights[:3]                      
+    what_residents_should_know = highlights            
+    actions_for_residents = []                         
+    tags = []                                          
+    uncertainty = 0.3                                 
 
     return CivicDoc(
         url=source_label or item.get("source_url"),
@@ -87,11 +83,6 @@ class SummarizeRequest(BaseModel):
 # ---------- Routes ----------
 @app.post("/summarize")
 async def summarize_json(req: SummarizeRequest):
-    """
-    JSON-only endpoint:
-      { "url": "...", "text": "...", "neighborhood": "..." }
-    """
-    # Quick stub to validate wiring without hitting Gemini
     if req.text and req.text.startswith("[TEST]"):
         return {
             "saved": True,
@@ -111,7 +102,6 @@ async def summarize_json(req: SummarizeRequest):
     if not (req.url or req.text):
         raise HTTPException(status_code=400, detail="Provide url or text")
 
-    # Get raw text
     source_label = None
     if req.url:
         data, ctype = await fetch_url_bytes(req.url)
@@ -127,10 +117,8 @@ async def summarize_json(req: SummarizeRequest):
     if not doc_text or len(doc_text.strip()) < 20:
         raise HTTPException(status_code=422, detail="Not enough text extracted to summarize.")
 
-    # Summarize with the robust agent
     item = await summarize_text(doc_text, source_url=(req.url or None))
 
-    # Save to your feed storage
     civic_doc = civicdoc_from_item(item, source_label)
     save_doc(civic_doc)
 
@@ -141,9 +129,7 @@ async def summarize_upload(
     file: UploadFile = File(...),
     neighborhood: Optional[str] = Form(None),
 ):
-    """
-    Multipart upload endpoint for PDFs.
-    """
+
     raw = await file.read()
     ctype = sniff_content_type(file.filename, file.content_type)
     text = await extract_text_from_bytes(raw, ctype)
@@ -162,8 +148,7 @@ async def summarize_upload(
 def feed():
     return {"items": get_feed()}
 
-# Keep your agent endpoint as-is if your coordinator.run_once signature fits.
-# If run_once now expects a store, we can adapt it—just tell me which storage you prefer.
+
 from civic_agents.coordinator import run_once as agent_run_once
 
 @app.post("/agent/run-once")

@@ -7,14 +7,12 @@ import google.generativeai as genai
 MAX_CHARS = 100_000
 
 def _get_model(model_name: Optional[str] = None):
-    # Load .env and read env vars at call time
     load_dotenv()
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
         raise RuntimeError("Missing GOOGLE_API_KEY in environment (.env)")
     genai.configure(api_key=api_key)
 
-    # 👇 pick model now (after .env is loaded)
     name = model_name or os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
     return genai.GenerativeModel(
         model_name=name,
@@ -34,7 +32,6 @@ async def summarize_text(text: str, source_url: Optional[str] = None) -> Dict[st
         "Return JSON with keys: title, date, location, highlights (list), why_matters.\n"
         "Text to summarize:\n" + (text or "")[:MAX_CHARS]
     )
-    # Use model from env at runtime
     model = _get_model()
 
     try:
