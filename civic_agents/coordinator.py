@@ -10,7 +10,6 @@ async def process_link(url: str, store) -> Dict[str, Any]:
     return item
 
 async def run_once(store) -> List[Dict[str, Any]]:
-    """Run discovery → extract → summarize → publish once."""
     urls = await discover_sources()
     results: List[Dict[str, Any]] = []
     for url in urls:
