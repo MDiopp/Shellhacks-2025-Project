@@ -11,11 +11,13 @@ from datetime import datetime
 from civic_agents.coordinator import run_once as agent_run_once
 
 
-load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-
 app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"ok": True, "service": "civic-assistant"}
 
 
 app.add_middleware(
