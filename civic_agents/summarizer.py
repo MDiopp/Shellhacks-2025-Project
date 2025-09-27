@@ -1,45 +1,60 @@
-import os
+import os, json, asyncio
 from datetime import datetime
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-load_dotenv()
+MAX_CHARS = 100_000
 
-API_KEY = os.getenv("GOOGLE_API_KEY")
-if not API_KEY:
-    raise RuntimeError("Missing GOOGLE_API_KEY in environment")
+def _get_model(model_name: Optional[str] = None):
+    # Load .env and read env vars at call time
+    load_dotenv()
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise RuntimeError("Missing GOOGLE_API_KEY in environment (.env)")
+    genai.configure(api_key=api_key)
 
-genai.configure(api_key=API_KEY)
-MODEL_NAME = "gemini-1.5-pro"
-
-SYSTEM_PROMPT = (
-    "You are a civic brief writer. Read the text and produce a concise, plain-language summary "
-    "for local residents. Include: title, date (if found), location, 3-6 bullet highlights, and "
-    "why-it-matters in one short paragraph. Keep neutral tone."
-)
+    # 👇 pick model now (after .env is loaded)
+    name = model_name or os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+    return genai.GenerativeModel(
+        model_name=name,
+        system_instruction=(
+            "You are a civic brief writer. Read the text and produce a concise, plain-language summary "
+            "for local residents. Include: title, date (if found), location, 3-6 bullet highlights, and "
+            "why-it-matters in one short paragraph. Keep neutral tone."
+        ),
+        generation_config={
+            "temperature": 0.2,
+            "response_mime_type": "application/json",
+        },
+    )
 
 async def summarize_text(text: str, source_url: Optional[str] = None) -> Dict[str, Any]:
-    # Simple call with a structured response expectation
-    model = genai.GenerativeModel(model_name=MODEL_NAME, system_instruction=SYSTEM_PROMPT)
     prompt = (
         "Return JSON with keys: title, date, location, highlights (list), why_matters.\n"
-        "Text to summarize:\n" + text[:100_000]  # cap to avoid huge prompts
+        "Text to summarize:\n" + (text or "")[:MAX_CHARS]
     )
-    resp = await model.generate_content_async(prompt)
+    # Use model from env at runtime
+    model = _get_model()
 
-    # Try to parse JSON; if it fails, fallback to plain
-    import json
-    payload: Dict[str, Any]
     try:
-        payload = json.loads(resp.text)
+        resp = await asyncio.to_thread(model.generate_content, prompt)
+        raw = (getattr(resp, "text", None) or "").strip()
+    except Exception as e:
+        # try fallback model from env
+        fb = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-1.5-flash")
+        print("Gemini call failed on primary:", repr(e), " → trying fallback:", fb)
+        resp = await asyncio.to_thread(_get_model(fb).generate_content, prompt)
+        raw = (getattr(resp, "text", None) or "").strip()
+
+    try:
+        payload = json.loads(raw)
     except Exception:
         payload = {
-            "title": (resp.text.split("\n")[0] or "Civic Update").strip(),
-            "date": None,
-            "location": None,
-            "highlights": [line.strip("- •") for line in resp.text.split("\n")[:5] if line.strip()],
-            "why_matters": resp.text,
+            "title": (raw.split("\n")[0] or "Civic Update").strip(),
+            "date": None, "location": None,
+            "highlights": [ln.strip("- •") for ln in raw.split("\n")[:5] if ln.strip()],
+            "why_matters": raw,
         }
 
     return {
@@ -50,6 +65,6 @@ async def summarize_text(text: str, source_url: Optional[str] = None) -> Dict[st
         "why_matters": payload.get("why_matters"),
         "source_url": source_url,
         "created_at": datetime.utcnow().isoformat() + "Z",
-        "entities": [],  # could add NER later
-        "body": text[:4000],  # raw excerpt for now
+        "entities": [],
+        "body": (text or "")[:4000],
     }
