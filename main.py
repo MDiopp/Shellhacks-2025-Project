@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 from storage import CivicDoc, save_doc, get_feed
 from datetime import datetime
-from agents.coordinator import run_once as agent_run_once
+from civic_agents.coordinator import run_once as agent_run_once
 
 
 load_dotenv()
