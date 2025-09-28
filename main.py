@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -8,6 +8,9 @@ import pdfplumber
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from datetime import datetime
+from storage.users import upsert_user, get_user
+
+
 
 
 from storage import CivicDoc, save_doc, get_feed
@@ -22,6 +25,14 @@ PDF_HINT = re.compile(r"\.pdf($|\?)", re.I)
 
 load_dotenv()  
 app = FastAPI()
+
+class LocationIn(BaseModel):
+    city: str
+    region: Optional[str] = ""
+    country: Optional[str] = "US"
+    lat: Optional[float] = None
+    lon: Optional[float] = None
+
 
 @app.get("/")
 def root():
@@ -162,3 +173,23 @@ async def run_once_endpoint():
         "errors": [x for x in items if "error" in x][:3],
         "preview": [ {"title": x.get("title"), "source_url": x.get("source_url")} for x in items if "error" not in x ][:5]
     }
+
+
+@app.get("/me")
+async def get_me(user_id: str = "demo"):
+    user = get_user(user_id)
+    if not user:
+        return {"ok": False, "error": "User not found"}
+    return {"ok": True, **user}
+
+@app.post("/me/location")
+async def set_location(loc: LocationIn, request: Request, user_id: str = "demo"):
+    upsert_user(
+        user_id,
+        city=loc.city,
+        region=loc.region,
+        country=loc.country,
+        lat=loc.lat,
+        lon=loc.lon,
+    )
+    return {"ok": True, "user_id": user_id, "city": loc.city, "region": loc.region, "country": loc.country}

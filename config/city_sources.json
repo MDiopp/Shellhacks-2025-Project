@@ -1,0 +1,305 @@
+{
+  "NewYork,NY,US": [
+    "https://legistar.council.nyc.gov/Calendar.aspx"
+  ],
+  "LosAngeles,CA,US": [
+    "https://clerk.lacity.org/calendar"
+  ],
+  "Chicago,IL,US": [
+    "https://chicityclerkelms.chicago.gov/Meetings/"
+  ],
+  "Houston,TX,US": [
+    "https://houston.novusagenda.com/agendapublic/"
+  ],
+  "Phoenix,AZ,US": [
+    "https://phoenix.legistar.com/Calendar.aspx"
+  ],
+  "Philadelphia,PA,US": [
+    "https://phila.legistar.com/Calendar.aspx"
+  ],
+  "SanAntonio,TX,US": [
+    "https://sanantonio.primegov.com/Portal"
+  ],
+  "SanDiego,CA,US": [
+    "https://sandiego.hylandcloud.com/211agendaonlinecouncil"
+  ],
+  "Dallas,TX,US": [
+    "https://cityofdallas.legistar.com/Calendar.aspx"
+  ],
+  "Jacksonville,FL,US": [
+    "https://jaxcityc.legistar.com/Calendar.aspx"
+  ],
+  "Austin,TX,US": [
+    "https://austintexas.legistar.com/Calendar.aspx"
+  ],
+  "FortWorth,TX,US": [
+    "https://fortworthgov.legistar.com/Calendar.aspx"
+  ],
+  "SanJose,CA,US": [
+    "https://sanjose.legistar.com/Calendar.aspx"
+  ],
+  "Columbus,OH,US": [
+    "https://columbus.legistar.com/Calendar.aspx"
+  ],
+  "Charlotte,NC,US": [
+    "https://charlottenc.legistar.com/Calendar.aspx"
+  ],
+  "Indianapolis,IN,US": [
+    "https://indianapolis-in.municodemeetings.com"
+  ],
+  "SanFrancisco,CA,US": [
+    "https://sfgov.legistar.com/Calendar.aspx"
+  ],
+  "Seattle,WA,US": [
+    "https://seattle.legistar.com/Calendar.aspx"
+  ],
+  "Denver,CO,US": [
+    "https://denver.legistar.com/Calendar.aspx"
+  ],
+  "OklahomaCity,OK,US": [
+    "https://okc.primegov.com/public/portal"
+  ],
+  "Nashville,TN,US": [
+    "https://nashville.legistar.com/Calendar.aspx"
+  ],
+  "Washington,DC,US": [
+    "https://dccouncil.gov"
+  ],
+  "ElPaso,TX,US": [
+    "https://elpasotexas.legistar.com/Calendar.aspx"
+  ],
+  "LasVegas,NV,US": [
+    "https://lasvegas.primegov.com/public/portal"
+  ],
+  "Boston,MA,US": [
+    "https://boston.legistar.com/Calendar.aspx"
+  ],
+  "Detroit,MI,US": [
+    "https://pub-detroitmi.escribemeetings.com"
+  ],
+  "Portland,OR,US": [
+    "https://efiles.portlandoregon.gov"
+  ],
+  "Louisville,KY,US": [
+    "https://louisville.legistar.com/Calendar.aspx"
+  ],
+  "Memphis,TN,US": [
+    "https://memphistn.gov/city-council-meeting-agenda/"
+  ],
+  "Baltimore,MD,US": [
+    "https://baltimore.legistar.com/Calendar.aspx"
+  ],
+  "Milwaukee,WI,US": [
+    "https://milwaukee.legistar.com/Calendar.aspx"
+  ],
+  "Albuquerque,NM,US": [
+    "https://cabq.legistar.com/Calendar.aspx"
+  ],
+  "Tucson,AZ,US": [
+    "https://tucsonaz.hylandcloud.com/221agendaonline/"
+  ],
+  "Fresno,CA,US": [
+    "https://fresno.legistar.com/Calendar.aspx"
+  ],
+  "Sacramento,CA,US": [
+    "https://sacramento.legistar.com/Calendar.aspx"
+  ],
+  "Mesa,AZ,US": [
+    "https://mesa.legistar.com/Calendar.aspx"
+  ],
+  "Atlanta,GA,US": [
+    "https://atlantacityga.iqm2.com"
+  ],
+  "KansasCity,MO,US": [
+    "https://kansascity.legistar.com/Calendar.aspx"
+  ],
+  "ColoradoSprings,CO,US": [
+    "https://coloradosprings.legistar.com/Calendar.aspx"
+  ],
+  "Omaha,NE,US": [
+    "https://cityclerk.cityofomaha.org/city-council"
+  ],
+  "Raleigh,NC,US": [
+    "https://go.boarddocs.com/nc/raleigh/Board.nsf/Public"
+  ],
+  "Miami,FL,US": [
+    "https://miamifl.iqm2.com"
+  ],
+  "VirginiaBeach,VA,US": [
+    "https://virginiabeach.legistar.com/Calendar.aspx"
+  ],
+  "LongBeach,CA,US": [
+    "https://longbeach.legistar.com/Calendar.aspx"
+  ],
+  "Oakland,CA,US": [
+    "https://oakland.legistar.com/Calendar.aspx"
+  ],
+  "Minneapolis,MN,US": [
+    "https://lims.minneapolismn.gov"
+  ],
+  "Bakersfield,CA,US": [
+    "https://bakersfield.legistar.com/Calendar.aspx"
+  ],
+  "Tulsa,OK,US": [
+    "https://tulsa.legistar.com/Calendar.aspx"
+  ],
+  "Tampa,FL,US": [
+    "https://tampa.legistar.com/Calendar.aspx"
+  ],
+  "Arlington,TX,US": [
+    "https://arlingtontx.legistar.com/Calendar.aspx"
+  ],
+  "Wichita,KS,US": [
+    "https://wichita.legistar.com/Calendar.aspx"
+  ],
+  "Aurora,CO,US": [
+    "https://aurora.legistar.com/Calendar.aspx"
+  ],
+  "NewOrleans,LA,US": [
+    "https://cityofno.granicus.com/ViewPublisher.php?view_id=2"
+  ],
+  "Cleveland,OH,US": [
+    "https://cleveland.legistar.com/Calendar.aspx"
+  ],
+  "Honolulu,HI,US": [
+    "https://hnldoc.ehawaii.gov/hnldoc"
+  ],
+  "Anaheim,CA,US": [
+    "https://anaheim.legistar.com/Calendar.aspx"
+  ],
+  "Henderson,NV,US": [
+    "https://henderson.legistar.com/Calendar.aspx"
+  ],
+  "Orlando,FL,US": [
+    "https://www.orlando.gov/Our-Government/Mayor-City-Council/City-Council-Meetings"
+  ],
+  "Lexington,KY,US": [
+    "https://lexington.legistar.com/Calendar.aspx"
+  ],
+  "Stockton,CA,US": [
+    "https://stockton.legistar.com/Calendar.aspx"
+  ],
+  "Riverside,CA,US": [
+    "https://riversideca.legistar.com/Calendar.aspx"
+  ],
+  "CorpusChristi,TX,US": [
+    "https://corpuschristi.legistar.com/Calendar.aspx"
+  ],
+  "Irvine,CA,US": [
+    "https://irvine.legistar.com/Calendar.aspx"
+  ],
+  "Cincinnati,OH,US": [
+    "https://cincinnati.legistar.com/Calendar.aspx"
+  ],
+  "SantaAna,CA,US": [
+    "https://santa-ana.legistar.com/Calendar.aspx"
+  ],
+  "Newark,NJ,US": [
+    "https://newark.legistar.com/Calendar.aspx"
+  ],
+  "St.Paul,MN,US": [
+    "https://stpaul.legistar.com/Calendar.aspx"
+  ],
+  "Pittsburgh,PA,US": [
+    "https://pittsburgh.legistar.com/Calendar.aspx"
+  ],
+  "Greensboro,NC,US": [
+    "https://greensboro.legistar.com/Calendar.aspx"
+  ],
+  "Durham,NC,US": [
+    "https://durhamnc.gov/AgendaCenter/City-Council-Meetings-4"
+  ],
+  "Lincoln,NE,US": [
+    "https://app.lincoln.ne.gov/city/council/agenda/index.htm"
+  ],
+  "JerseyCity,NJ,US": [
+    "https://jerseycity.legistar.com/Calendar.aspx"
+  ],
+  "Plano,TX,US": [
+    "https://plano.legistar.com/Calendar.aspx"
+  ],
+  "Anchorage,AK,US": [
+    "https://www.muni.org/Departments/Assembly/Clerk/Pages/AgendasandMinutes.aspx"
+  ],
+  "NorthLasVegas,NV,US": [
+    "https://northlasvegas.legistar.com/Calendar.aspx"
+  ],
+  "St.Louis,MO,US": [
+    "https://stlouis-mo.legistar.com/Calendar.aspx"
+  ],
+  "Madison,WI,US": [
+    "https://madison.legistar.com/Calendar.aspx"
+  ],
+  "Chandler,AZ,US": [
+    "https://chandleraz.legistar.com/Calendar.aspx"
+  ],
+  "Gilbert,AZ,US": [
+    "https://gilbert.legistar.com/Calendar.aspx"
+  ],
+  "Reno,NV,US": [
+    "https://reno.legistar.com/Calendar.aspx"
+  ],
+  "Buffalo,NY,US": [
+    "https://buffalony.iqm2.com"
+  ],
+  "ChulaVista,CA,US": [
+    "https://chulavista.legistar.com/Calendar.aspx"
+  ],
+  "FortWayne,IN,US": [
+    "https://www.cityoffortwayne.org/city-council/council-meeting-information.html"
+  ],
+  "Lubbock,TX,US": [
+    "https://lubbock.legistar.com/Calendar.aspx"
+  ],
+  "Toledo,OH,US": [
+    "https://toledo.legistar.com/Calendar.aspx"
+  ],
+  "St.Petersburg,FL,US": [
+    "https://www.stpete.org/government/city_council"
+  ],
+  "Laredo,TX,US": [
+    "https://www.cityoflaredo.com/Calendars/Agendas.html"
+  ],
+  "Irving,TX,US": [
+    "https://irvingtx.legistar.com/Calendar.aspx"
+  ],
+  "Chesapeake,VA,US": [
+    "https://chesapeake.legistar.com/Calendar.aspx"
+  ],
+  "Glendale,AZ,US": [
+    "https://glendale.legistar.com/Calendar.aspx"
+  ],
+  "Winston-Salem,NC,US": [
+    "https://www.cityofws.org/164/Agendas-Minutes"
+  ],
+  "PortSt.Lucie,FL,US": [
+    "https://www.cityofpsl.com/government/city-council/council-meetings"
+  ],
+  "Scottsdale,AZ,US": [
+    "https://scottsdale.legistar.com/Calendar.aspx"
+  ],
+  "Garland,TX,US": [
+    "https://garlandtx.legistar.com/Calendar.aspx"
+  ],
+  "BoiseCity,ID,US": [
+    "https://www.cityofboise.org/departments/city-council/meetings-and-agendas/"
+  ],
+  "Norfolk,VA,US": [
+    "https://norfolk.legistar.com/Calendar.aspx"
+  ],
+  "Spokane,WA,US": [
+    "https://spokane.legistar.com/Calendar.aspx"
+  ],
+  "Richmond,VA,US": [
+    "https://richmondva.legistar.com/Calendar.aspx"
+  ],
+  "Fremont,CA,US": [
+    "https://fremont.legistar.com/Calendar.aspx"
+  ],
+  "Huntsville,AL,US": [
+    "https://www.huntsvilleal.gov/government/city-council/city-council-agendas-minutes/"
+  ],
+  "OrangeCounty,FL,US": [
+    "https://www.orangecountyfl.net/OpenGovernment/BoardofCountyCommissioners/Agenda.aspx"
+  ]
+}
