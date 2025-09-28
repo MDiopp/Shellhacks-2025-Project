@@ -149,9 +149,16 @@ def feed():
     return {"items": get_feed()}
 
 
+# main.py
 from civic_agents.coordinator import run_once as agent_run_once
 
 @app.post("/agent/run-once")
 async def run_once_endpoint():
-    await agent_run_once()
-    return {"status": "ok"}
+    items = await agent_run_once()   # returns list of item dicts (or error dicts)
+    # show a small preview; the full items are typically long
+    return {
+        "discovered": len(items),
+        "ok": sum(1 for x in items if "error" not in x),
+        "errors": [x for x in items if "error" in x][:3],
+        "preview": [ {"title": x.get("title"), "source_url": x.get("source_url")} for x in items if "error" not in x ][:5]
+    }
