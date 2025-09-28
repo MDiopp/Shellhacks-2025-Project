@@ -83,3 +83,39 @@ async def discover_sources(limit_per_site: int = 10, max_sites: int = 5) -> List
                 print(f"[discovery] Failed {seed}: {e!r}")
                 continue
     return found
+
+
+# --- add below your existing imports/helpers ---
+from typing import List, Set
+import httpx
+
+async def discover_sources_from(seeds: List[str], limit_per_site: int = 10, max_sites: int = 5) -> List[str]:
+    """
+    Crawl a provided list of seed URLs and return likely civic docs (agenda/minutes/packets/meeting pages).
+    Relies on your existing helpers: _fetch_html() and _clean_and_filter_links().
+    """
+    if not seeds:
+        return []
+    seeds = [s for s in seeds if isinstance(s, str) and s.lower().startswith(("http://", "https://"))][:max_sites]
+
+    found: List[str] = []
+    seen: Set[str] = set()
+
+    async with httpx.AsyncClient(follow_redirects=True) as client:
+        for seed in seeds:
+            try:
+                html = await _fetch_html(seed, client)          # uses your existing helper
+                urls = _clean_and_filter_links(html, seed, limit_per_site)  # existing helper
+                for u in urls:
+                    if u not in seen:
+                        seen.add(u)
+                        found.append(u)
+            except Exception as e:
+                print(f"[discovery] Failed {seed}: {e!r}")
+                continue
+    return found
+
+# Optional: keep the old API name for backwards compatibility
+async def discover_sources(limit_per_site: int = 10, max_sites: int = 5) -> List[str]:
+    seeds = _seeds_from_env() if "_seeds_from_env" in globals() else []
+    return await discover_sources_from(seeds, limit_per_site=limit_per_site, max_sites=max_sites)

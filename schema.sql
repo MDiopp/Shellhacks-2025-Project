@@ -1,3 +1,4 @@
+
 -- schema.sql
 CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,
@@ -8,5 +9,6 @@ CREATE TABLE IF NOT EXISTS users (
   lat REAL,
   lon REAL,
   created_at TEXT,
+  user_id TEXT,
   updated_at TEXT
 );

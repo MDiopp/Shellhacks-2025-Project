@@ -36,6 +36,7 @@ class CivicDoc:
     uncertainty: float
     fetched_at: str
     user_id: Optional[str] = None
+    
 
     @staticmethod
     def from_item(item: Dict[str, Any], user_id: Optional[str] = None) -> "CivicDoc":
