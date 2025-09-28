@@ -5,10 +5,10 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 from .db import conn, ensure_schema
 
-# Ensure core schema (users) exists first
+
 ensure_schema()
 
-# Ensure civic_docs table exists
+
 with conn() as c:
     c.executescript("""
     CREATE TABLE IF NOT EXISTS civic_docs (

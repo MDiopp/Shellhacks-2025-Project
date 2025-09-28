@@ -1,0 +1,25 @@
+/* frontend/src/index.css */
+@import "tailwindcss";
+
+/* Full-height root so the grid fills the screen */
+html, body, #root { height: 100%; }
+
+/* Animated gradient text for the main title */
+@keyframes gradient-move {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient-text {
+  background-image: linear-gradient(
+    90deg,
+    #10b981, #3b82f6, #a78bfa, #f59e0b, #ef4444, #10b981
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-move 8s ease infinite;
+}
+

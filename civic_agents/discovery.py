@@ -1,4 +1,3 @@
-# civic_agents/discovery.py
 import re
 from typing import List, Set
 from urllib.parse import urljoin, urlparse
@@ -6,9 +5,8 @@ import httpx
 from bs4 import BeautifulSoup
 import os
 
-# You can override these in .env with CIVIC_SOURCE_URLS="https://...,https://..."
+
 DEFAULT_SEEDS: List[str] = [
-    # 🔧 Replace/extend with your local gov pages (agenda archives, meeting calendars, clerk pages)
     "https://www.orlando.gov/Our-Government/Mayor-City-Council/City-Council-Meetings",
     "https://www.orangecountyfl.net/OpenGovernment/BoardofCountyCommissioners/Agenda.aspx",
     ""
@@ -26,7 +24,6 @@ def _seeds_from_env() -> List[str]:
 async def _fetch_html(url: str, client: httpx.AsyncClient) -> str:
     r = await client.get(url, timeout=30, follow_redirects=True)
     r.raise_for_status()
-    # try text (charset handled by httpx); fallback to bytes decode
     try:
         return r.text
     except Exception:
@@ -48,13 +45,10 @@ def _clean_and_filter_links(html: str, base: str, limit: int) -> List[str]:
         text = (a.get_text(" ") or "").strip()
 
         abs_url = urljoin(base, href)
-        # keep within same site or obvious gov pdfs
         if urlparse(abs_url).netloc and base_netloc and urlparse(abs_url).netloc != base_netloc:
-            # allow cross-domain PDFs if clearly agenda/minutes
             if not PDF_HINT.search(abs_url):
                 continue
 
-        # heuristic: keep agenda/minutes/meeting links; prefer PDFs but allow HTML detail pages
         if PDF_HINT.search(abs_url) or KEYWORDS.search(href) or KEYWORDS.search(text):
             if abs_url not in seen:
                 seen.add(abs_url)
@@ -64,7 +58,6 @@ def _clean_and_filter_links(html: str, base: str, limit: int) -> List[str]:
     return links
 
 async def discover_sources(limit_per_site: int = 10, max_sites: int = 5) -> List[str]:
-    """Return a deduped list of likely civic documents (PDFs or HTML pages)."""
     seeds = _seeds_from_env()[:max_sites]
     found: List[str] = []
     seen: Set[str] = set()
@@ -79,21 +72,15 @@ async def discover_sources(limit_per_site: int = 10, max_sites: int = 5) -> List
                         seen.add(u)
                         found.append(u)
             except Exception as e:
-                # keep crawling other seeds
                 print(f"[discovery] Failed {seed}: {e!r}")
                 continue
     return found
 
 
-# --- add below your existing imports/helpers ---
 from typing import List, Set
 import httpx
 
 async def discover_sources_from(seeds: List[str], limit_per_site: int = 10, max_sites: int = 5) -> List[str]:
-    """
-    Crawl a provided list of seed URLs and return likely civic docs (agenda/minutes/packets/meeting pages).
-    Relies on your existing helpers: _fetch_html() and _clean_and_filter_links().
-    """
     if not seeds:
         return []
     seeds = [s for s in seeds if isinstance(s, str) and s.lower().startswith(("http://", "https://"))][:max_sites]
@@ -104,8 +91,8 @@ async def discover_sources_from(seeds: List[str], limit_per_site: int = 10, max_
     async with httpx.AsyncClient(follow_redirects=True) as client:
         for seed in seeds:
             try:
-                html = await _fetch_html(seed, client)          # uses your existing helper
-                urls = _clean_and_filter_links(html, seed, limit_per_site)  # existing helper
+                html = await _fetch_html(seed, client)         
+                urls = _clean_and_filter_links(html, seed, limit_per_site)  
                 for u in urls:
                     if u not in seen:
                         seen.add(u)
@@ -115,7 +102,7 @@ async def discover_sources_from(seeds: List[str], limit_per_site: int = 10, max_
                 continue
     return found
 
-# Optional: keep the old API name for backwards compatibility
+
 async def discover_sources(limit_per_site: int = 10, max_sites: int = 5) -> List[str]:
     seeds = _seeds_from_env() if "_seeds_from_env" in globals() else []
     return await discover_sources_from(seeds, limit_per_site=limit_per_site, max_sites=max_sites)

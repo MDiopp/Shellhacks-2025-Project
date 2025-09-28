@@ -1,9 +1,8 @@
-# storage/users.py
 from datetime import datetime
 from typing import Optional, Dict
-from .db import conn, ensure_schema  # NEW
+from .db import conn, ensure_schema 
 
-ensure_schema()  # make sure 'users' exists immediately
+ensure_schema()  
 
 def upsert_user(user_id: str, city: str, region: str = "", country: str = "US",
                 name: Optional[str] = None, lat: Optional[float] = None,

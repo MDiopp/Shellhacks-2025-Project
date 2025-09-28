@@ -1,5 +1,3 @@
-# storage/__init__.py
-
 from typing import List, Optional, Dict
 from .db import conn
 from .feed import save_doc, get_feed

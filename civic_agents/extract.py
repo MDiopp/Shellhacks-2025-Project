@@ -21,7 +21,6 @@ async def extract_text_from_bytes(data: bytes, content_type: ContentType) -> str
         return "\n".join(pages)
     elif content_type == "text/html":
         soup = BeautifulSoup(data, "html.parser")
-        # remove script/style/nav
         for tag in soup(["script", "style", "nav", "header", "footer"]):
             tag.extract()
         text = soup.get_text(" ")

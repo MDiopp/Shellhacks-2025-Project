@@ -44,7 +44,7 @@ def _norm(s: str) -> str:
     return "".join((s or "").split()).replace(".", "").replace("-", "")
 
 def _seeds_for_user(user: dict) -> list[str]:
-    data = _load_city_sources()   # <-- freshly read each call
+    data = _load_city_sources()  
 
     city = user.get("city") or ""
     region = (user.get("region") or "").upper()
@@ -86,7 +86,7 @@ async def run_for_me(user_id: str = "demo", limit_per_site: int = 10):
     results = []
     for u in urls:
         try:
-            item = await process_link(u, user_id=user_id)   # fetch → extract → summarize → save
+            item = await process_link(u, user_id=user_id)   
             results.append(item)
         except Exception as e:
             results.append({"source_url": u, "error": str(e)})
@@ -142,7 +142,7 @@ def extract_text_from_html(data: bytes) -> str:
         t.extract()
     return " ".join(soup.get_text(" ").split()).strip()
 
-def civicdoc_from_item(item: dict, source_label: Optional[str]) -> CivicDoc:
+def civicdoc_from_item(item: dict, source_label: Optional[str], user_id: Optional[str]) -> CivicDoc:
     title = item.get("title") or "Civic Update"
     tl_dr = item.get("why_matters") or ""
     highlights = item.get("highlights") or []
@@ -165,13 +165,13 @@ def civicdoc_from_item(item: dict, source_label: Optional[str]) -> CivicDoc:
         user_id=user_id,    
     )
 
-# ---------- API models ----------
+
 class SummarizeRequest(BaseModel):
     url: Optional[str] = None
     text: Optional[str] = None
     neighborhood: Optional[str] = None
 
-# ---------- Routes ----------
+
 @app.post("/summarize")
 async def summarize_json(req: SummarizeRequest):
     if req.text and req.text.startswith("[TEST]"):
@@ -241,13 +241,11 @@ def feed():
     return {"items": get_feed()}
 
 
-# main.py
 from civic_agents.coordinator import run_once as agent_run_once
 
 @app.post("/agent/run-once")
-async def run_once_endpoint():
-    items = await agent_run_once(user_id=user_id)   # returns list of item dicts (or error dicts)
-    # show a small preview; the full items are typically long
+async def run_once_endpoint(user_id: str = "demo"):
+    items = await agent_run_once(user_id=user_id)   
     return {
         "discovered": len(items),
         "ok": sum(1 for x in items if "error" not in x),

@@ -1,9 +1,8 @@
-# storage/db.py
 import os, sqlite3
 from pathlib import Path
 
-# Always use an absolute path so uvicorn's CWD doesn't matter
-APP_DIR = Path(__file__).resolve().parents[1]  # project root (adjust if needed)
+
+APP_DIR = Path(__file__).resolve().parents[1]  
 DB_PATH = APP_DIR / "civic.db"
 
 SCHEMA = """
