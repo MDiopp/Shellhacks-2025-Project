@@ -86,7 +86,7 @@ async def run_for_me(user_id: str = "demo", limit_per_site: int = 10):
     results = []
     for u in urls:
         try:
-            item = await process_link(u)   # fetch → extract → summarize → save
+            item = await process_link(u, user_id=user_id)   # fetch → extract → summarize → save
             results.append(item)
         except Exception as e:
             results.append({"source_url": u, "error": str(e)})
@@ -162,6 +162,7 @@ def civicdoc_from_item(item: dict, source_label: Optional[str]) -> CivicDoc:
         tags=tags,
         uncertainty=uncertainty,
         fetched_at=datetime.utcnow().isoformat(),
+        user_id=user_id,    
     )
 
 # ---------- API models ----------
@@ -209,7 +210,7 @@ async def summarize_json(req: SummarizeRequest):
 
     item = await summarize_text(doc_text, source_url=(req.url or None))
 
-    civic_doc = civicdoc_from_item(item, source_label)
+    civic_doc = civicdoc_from_item(item, source_label, user_id=user_id)
     save_doc(civic_doc)
 
     return {"saved": True, "item": item}
@@ -218,6 +219,7 @@ async def summarize_json(req: SummarizeRequest):
 async def summarize_upload(
     file: UploadFile = File(...),
     neighborhood: Optional[str] = Form(None),
+    user_id: Optional[str] = Form("demo"),
 ):
 
     raw = await file.read()
@@ -244,7 +246,7 @@ from civic_agents.coordinator import run_once as agent_run_once
 
 @app.post("/agent/run-once")
 async def run_once_endpoint():
-    items = await agent_run_once()   # returns list of item dicts (or error dicts)
+    items = await agent_run_once(user_id=user_id)   # returns list of item dicts (or error dicts)
     # show a small preview; the full items are typically long
     return {
         "discovered": len(items),
@@ -278,11 +280,3 @@ async def set_location(loc: LocationIn, request: Request, user_id: str = "demo")
 def debug_city_keys():
     return {"keys": list(_load_city_sources().keys())[:200]}
 
-
-def save_doc(doc: CivicDoc):
-    with conn() as c:
-        c.execute(
-            "INSERT INTO feed (url, title, content, user_id) VALUES (?, ?, ?, ?)",
-            (doc.url, doc.title, doc.content, doc.user_id),
-        )
-        c.commit()

@@ -1,11 +1,14 @@
 # storage/feed.py
-from dataclasses import dataclass, asdict
+# storage/feed.py
+from dataclasses import dataclass
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 from .db import conn, ensure_schema
 
-# extend schema: create civic_docs if not exists
+# Ensure core schema (users) exists first
 ensure_schema()
+
+# Ensure civic_docs table exists
 with conn() as c:
     c.executescript("""
     CREATE TABLE IF NOT EXISTS civic_docs (
@@ -36,7 +39,6 @@ class CivicDoc:
     uncertainty: float
     fetched_at: str
     user_id: Optional[str] = None
-    
 
     @staticmethod
     def from_item(item: Dict[str, Any], user_id: Optional[str] = None) -> "CivicDoc":
